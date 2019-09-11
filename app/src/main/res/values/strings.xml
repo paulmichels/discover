@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Vuzix</string>
+    <string name="item1">CNAM</string>
+    <string name="item2">Vuzix</string>
+    <string name="item3">Blade</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+</resources>
