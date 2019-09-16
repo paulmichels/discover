@@ -1,4 +1,4 @@
-package com.cnam.vuzix.dto;
+package com.cnam.discover.dto;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.cnam.vuzix.api;
+package com.cnam.discover.api;
 
 import android.content.Context;
 import android.graphics.Bitmap;

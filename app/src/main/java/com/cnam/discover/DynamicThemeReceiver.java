@@ -1,4 +1,4 @@
-package com.cnam.vuzix;
+package com.cnam.discover;
 
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;

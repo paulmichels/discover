@@ -1,4 +1,4 @@
-package com.cnam.vuzix;
+package com.cnam.discover;
 
 import com.vuzix.hud.resources.DynamicThemeApplication;
 

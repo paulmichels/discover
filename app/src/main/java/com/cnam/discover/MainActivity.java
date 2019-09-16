@@ -1,4 +1,4 @@
-package com.cnam.vuzix;
+package com.cnam.discover;
 
 
 import android.Manifest;
@@ -15,11 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.cnam.vuzix.service.CameraService;
-import com.crashlytics.android.Crashlytics;
+import com.cnam.discover.service.CameraService;
 import com.vuzix.hud.actionmenu.ActionMenuActivity;
 
-import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends ActionMenuActivity{
 

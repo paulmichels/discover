@@ -1,4 +1,4 @@
-package com.cnam.vuzix.service;
+package com.cnam.discover.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.view.SurfaceView;
 
 import androidx.annotation.Nullable;
 
-import com.cnam.vuzix.MainActivity;
+import com.cnam.discover.MainActivity;
 
 import java.io.FileOutputStream;
 import java.util.Timer;
