@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 29
@@ -26,8 +27,12 @@ dependencies {
     implementation 'com.vuzix:connectivity-sdk:1.0'
     //Requetes HTTP
     implementation 'com.android.volley:volley:1.1.1'
-    //FaceDetection
+    //Firebase
     implementation 'com.google.firebase:firebase-analytics:17.2.0'
     implementation 'com.google.firebase:firebase-ml-vision:23.0.0'
     implementation 'com.google.firebase:firebase-ml-vision-face-model:18.0.0'
+    //Crashlytics
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 }
+
+apply plugin: 'com.google.gms.google-services'

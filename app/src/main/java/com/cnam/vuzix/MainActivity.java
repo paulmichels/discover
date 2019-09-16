@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,7 +16,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.cnam.vuzix.service.CameraService;
+import com.crashlytics.android.Crashlytics;
 import com.vuzix.hud.actionmenu.ActionMenuActivity;
+
+import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends ActionMenuActivity{
 
@@ -85,5 +87,11 @@ public class MainActivity extends ActionMenuActivity{
         Intent intent = new Intent(MainActivity.this, CameraService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(MainActivity.this, CameraService.class));
     }
 }
