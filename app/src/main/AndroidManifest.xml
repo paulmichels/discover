@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.cnam.vuzix">
+    package="com.cnam.discover">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -9,7 +9,7 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <application
-        android:name=".DynamicTheme"
+        android:name="com.cnam.discover.DynamicTheme"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,7 +19,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <service
-            android:name=".service.CameraService"
+            android:name="com.cnam.discover.service.CameraService"
             android:enabled="true"
             android:exported="true"/>
 
@@ -27,13 +27,13 @@
             android:name="com.vuzix.icon.tint"
             android:value="true" />
 
-        <receiver android:name=".Widget">
+        <receiver android:name="com.cnam.discover.Widget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".DynamicThemeReceiver"
+            android:name="com.cnam.discover.DynamicThemeReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -41,7 +41,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".MainActivity">
+        <activity android:name="com.cnam.discover.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

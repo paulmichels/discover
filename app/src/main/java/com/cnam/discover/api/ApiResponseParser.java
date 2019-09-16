@@ -1,6 +1,6 @@
-package com.cnam.vuzix.api;
+package com.cnam.discover.api;
 
-import com.cnam.vuzix.dto.IdentificationDto;
+import com.cnam.discover.dto.IdentificationDto;
 
 import org.json.JSONException;
 import org.json.JSONObject;
