@@ -13,10 +13,9 @@ import androidx.annotation.Nullable;
 
 import com.cnam.vuzix.MainActivity;
 
+import java.io.FileOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
-
-//TODO : release la camera!
 
 @SuppressWarnings("deprecation")
 public class CameraService extends Service {
@@ -40,6 +39,7 @@ public class CameraService extends Service {
         super.onDestroy();
         mCamera.stopPreview();
         mCamera.release();
+        mCamera = null;
     }
 
     @Nullable
@@ -76,6 +76,14 @@ public class CameraService extends Service {
                 public void onPictureTaken(byte[] data, Camera camera) {
                     Bitmap picture = BitmapFactory.decodeByteArray(data, 0, data.length);
                     MainActivity.imageView.setImageBitmap(picture);
+                    try {
+                        FileOutputStream out = new FileOutputStream(fileName);
+                        picture.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                        picture.recycle(); //Signale que le fichier peut être détruit
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         } catch (Exception e) {
@@ -83,24 +91,4 @@ public class CameraService extends Service {
         }
     }
 
-    /*
-    public void takePicture(final String fileName) {
-        Camera.PictureCallback callback = new Camera.PictureCallback() {
-
-            @Override
-            public void onPictureTaken(byte[] data, Camera camera) {
-                Bitmap picture = BitmapFactory.decodeByteArray(data, 0, data.length);
-                MainActivity.imageView.setImageBitmap(picture);
-                    try {
-                        FileOutputStream out = new FileOutputStream(fileName);
-                        picture.compress(Bitmap.CompressFormat.JPEG, 90, out);
-                        picture.recycle();
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-            }
-        };
-    }
- */
 }
