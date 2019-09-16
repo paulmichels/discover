@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">Vuzix</string>
-    <string name="item1">CNAM</string>
-    <string name="item2">Vuzix</string>
-    <string name="item3">Blade</string>
+    <string name="settings">Paramètres</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+
+    <string name="error_cannot_write">Cannot write image captured by camera.</string>
+    <string name="error_cannot_open">Cannot open camera.</string>
+    <string name="error_cannot_get_permission">Camera permission not available.</string>
+    <string name="error_not_having_camera">Your device does not have front camera.</string>
+    <string name="error_camera_permission_denied">Camera permission denied.</string>
 </resources>

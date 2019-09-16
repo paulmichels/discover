@@ -8,21 +8,13 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 public class Widget extends AppWidgetProvider {
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-
-        boolean isLightMode = isLightMode(context);
-
-        if(appWidgetManager == null)
-        {
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+        if(appWidgetManager == null) {
             appWidgetManager = (AppWidgetManager)context.getSystemService(Context.APPWIDGET_SERVICE);
             appWidgetId = appWidgetManager.getAppWidgetIds(new ComponentName(context, Widget.class))[0];
 
         }
-
-        RemoteViews views = new RemoteViews(context.getPackageName(),
-                isLightMode ? R.layout.widget_light: R.layout.widget_dark);
-
+        RemoteViews views = new RemoteViews(context.getPackageName(), isLightMode(context) ? R.layout.widget_light: R.layout.widget_dark);
         appWidgetManager.updateAppWidget(appWidgetId,views);
 
     }
@@ -39,8 +31,7 @@ public class Widget extends AppWidgetProvider {
 
     }
 
-    private static boolean isLightMode(Context context)
-    {
+    private static boolean isLightMode(Context context) {
         return ((DynamicTheme)context.getApplicationContext()).isLightMode();
     }
 }

@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cnam.vuzix">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-feature android:name="android.hardware.camera" />
+
     <application
         android:name=".DynamicTheme"
         android:allowBackup="true"
@@ -10,17 +15,23 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/HudTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <meta-data android:name="com.vuzix.icon.tint" android:value="true" />
 
+        <service
+            android:name=".service.CameraService"
+            android:enabled="true"
+            android:exported="true"/>
+
+        <meta-data
+            android:name="com.vuzix.icon.tint"
+            android:value="true" />
 
         <receiver android:name=".Widget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".DynamicThemeReceiver"
             android:enabled="true"
@@ -36,17 +47,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data android:name="com.vuzix.icon.tint" android:value="true" />
+
+            <meta-data
+                android:name="com.vuzix.icon.tint"
+                android:value="true" />
         </activity>
 
         <meta-data
             android:name="android.appwidget.provider"
             android:resource="@xml/widget_info" />
-
         <meta-data
             android:name="com.vuzix.launcher.widget"
             android:value="com.cnam.vuzix.MainActivity" />
-
     </application>
 
 </manifest>

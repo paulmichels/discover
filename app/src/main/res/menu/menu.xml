@@ -2,15 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/item1"
-        android:title="@string/item1"
-        android:onClick="showItem1"/>
-    <item
-        android:id="@+id/item2"
-        android:title="@string/item2"
-        android:onClick="showItem2"/>
-    <item
-        android:id="@+id/item3"
-        android:title="@string/item3"
-        android:onClick="showItem3"/>
+        android:id="@+id/bluetoothItem"
+        android:title="@string/settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:onClick="settingsItem"/>
 </menu>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "509146113900",
+    "firebase_url": "https://vuzix-6e523.firebaseio.com",
+    "project_id": "vuzix-6e523",
+    "storage_bucket": "vuzix-6e523.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509146113900:android:a5e5dd0ae9189839f1f549",
+        "android_client_info": {
+          "package_name": "com.cnam.vuzix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "509146113900-3jpntol2t3p96fipde5gqj5h27em14gs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY40tR9RbrD9698aPtnhdw3c0Hc0fl3rs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "509146113900-3jpntol2t3p96fipde5gqj5h27em14gs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
