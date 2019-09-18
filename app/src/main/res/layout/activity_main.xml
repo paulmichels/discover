@@ -26,9 +26,11 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="25.6dp"
+        android:layout_height="25.6dp"
         android:layout_margin="20dp"
-        android:src="@android:drawable/ic_menu_camera"/>
+        android:src="@android:drawable/ic_menu_camera"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/mainTextView3"/>
 
 </RelativeLayout>
