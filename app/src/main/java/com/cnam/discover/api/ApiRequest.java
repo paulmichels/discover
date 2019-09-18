@@ -17,12 +17,13 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ApiRequest {
     private RequestQueue requestQueue;
     private Context context;
-    private static final String baseUrl = "http://10.0.2.2/";
+    private static final String baseUrl = "http://151.80.45.139";
 
     public static final String GET_IDENTIFICATION = "/identification";
 
@@ -49,7 +50,7 @@ public class ApiRequest {
         requestQueue.add(request);
     }
 
-    public void apiPostRequest(String method, final apiCallback callback){
+    public void apiPostImage(String method, final String base64, final apiCallback callback){
         String url = baseUrl +  method;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -61,7 +62,14 @@ public class ApiRequest {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(context, errorInstance(error));
             }
-        });
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("image", base64);
+                return parameters;
+            }
+        };
         requestQueue.add(request);
     }
 
