@@ -24,13 +24,4 @@
         android:text="Hello In the Center!"
         android:layout_below="@id/mainTextView" android:layout_centerHorizontal="true"  />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="25.6dp"
-        android:layout_height="25.6dp"
-        android:layout_margin="20dp"
-        android:src="@android:drawable/ic_menu_camera"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/mainTextView3"/>
-
 </RelativeLayout>

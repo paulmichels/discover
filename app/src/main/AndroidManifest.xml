@@ -20,7 +20,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <service
-            android:name="com.cnam.discover.service.CameraService"
+            android:name="com.cnam.discover.service.DiscoverService"
             android:enabled="true"
             android:exported="true"/>
 

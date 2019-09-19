@@ -27,8 +27,6 @@ public class ApiRequest {
 
     public static final String GET_IDENTIFICATION = "/identification";
 
-    public static final String IMAGE_PARAMETER = "image";
-
     public ApiRequest(RequestQueue requestQueue, Context context){
         this.requestQueue = requestQueue;
         this.context = context;
@@ -50,7 +48,7 @@ public class ApiRequest {
         requestQueue.add(request);
     }
 
-    public void apiPostImage(String method, final String base64, final apiCallback callback){
+    public void apiPostRequest(String method, final Map<String, String> parameters, final apiCallback callback){
         String url = baseUrl +  method;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -65,8 +63,6 @@ public class ApiRequest {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> parameters = new HashMap<>();
-                parameters.put("image", base64);
                 return parameters;
             }
         };
@@ -89,17 +85,17 @@ public class ApiRequest {
         Log.d("API", error.networkResponse + " : " + error.getMessage());
         String instance;
         if (error instanceof NetworkError) {
-            instance = NetworkError.class.getName();
+            instance = NetworkError.class.getSimpleName();
         } else if (error instanceof ServerError) {
-            instance = ServerError.class.getName();
+            instance = ServerError.class.getSimpleName();
         } else if (error instanceof AuthFailureError) {
-            instance = AuthFailureError.class.getName();
+            instance = AuthFailureError.class.getSimpleName();
         } else if (error instanceof ParseError) {
-            instance = ParseError.class.getName();
+            instance = ParseError.class.getSimpleName();
         } else if (error instanceof NoConnectionError) {
-            instance = NoConnectionError.class.getName();
+            instance = NoConnectionError.class.getSimpleName();
         } else if (error instanceof TimeoutError) {
-            instance = TimeoutError.class.getName();
+            instance = TimeoutError.class.getSimpleName();
         } else {
             instance = "Unknow Error";
         }
