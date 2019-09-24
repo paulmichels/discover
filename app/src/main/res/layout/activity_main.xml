@@ -24,4 +24,11 @@
         android:text="Hello In the Center!"
         android:layout_below="@id/mainTextView" android:layout_centerHorizontal="true"  />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mainTextView3"
+        android:layout_centerHorizontal="true"/>
+
 </RelativeLayout>

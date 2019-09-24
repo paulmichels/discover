@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,11 +28,15 @@ public class MainActivity extends ActionMenuActivity {
 
     private DataUpdateReceiver dataUpdateReceiver;
 
+    public static ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        imageView = findViewById(R.id.imageView);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
@@ -46,7 +51,7 @@ public class MainActivity extends ActionMenuActivity {
         if (dataUpdateReceiver == null) {
             dataUpdateReceiver = new DataUpdateReceiver();
         }
-        IntentFilter intentFilter = new IntentFilter(DiscoverService.REFRESH_DATA_INTENT);
+        IntentFilter intentFilter = new IntentFilter(DiscoverService.FACE_INFORMATIONS);
         registerReceiver(dataUpdateReceiver, intentFilter);
     }
 
@@ -114,7 +119,7 @@ public class MainActivity extends ActionMenuActivity {
     private class DataUpdateReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(DiscoverService.REFRESH_DATA_INTENT)) {
+            if (intent.getAction().equals(DiscoverService.FACE_INFORMATIONS)) {
                 //
             }
         }

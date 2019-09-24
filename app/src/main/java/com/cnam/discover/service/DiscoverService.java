@@ -16,28 +16,39 @@ import android.util.Base64;
 import android.view.SurfaceView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.volley.RequestQueue;
+import com.cnam.discover.MainActivity;
 import com.cnam.discover.api.ApiRequest;
 import com.cnam.discover.api.ApiResponseParser;
 import com.cnam.discover.api.ApiSingleton;
 import com.cnam.discover.dto.IdentificationDto;
+import com.cnam.discover.dto.TestDto;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.face.FirebaseVisionFace;
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
 
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class DiscoverService extends Service {
     private static Camera mCamera;
-    public static final String REFRESH_DATA_INTENT = "REFRESH_DATA_INTENT";
-    public static final String BASE_64_BITMAP = "BASE_64_BITMAP";
+    public static final String FACE_INFORMATIONS = "FACE_INFORMATIONS";
 
     private ApiRequest apiRequest;
     private RequestQueue requestQueue;
+    private FirebaseVisionFaceDetector faceDetector;
 
     @Override
     public void onCreate() {
@@ -45,11 +56,12 @@ public class DiscoverService extends Service {
 
         requestQueue = ApiSingleton.getInstance(this).getRequestQueue();
         apiRequest = new ApiRequest(requestQueue, this);
+        faceDetector = initFacedetector();
 
         SurfaceView surface = new SurfaceView(this);
         try {
             mCamera = Camera.open(0);
-            mCamera = setCameraParameters(mCamera);
+            mCamera.getParameters().setPictureSize(480,480);
             mCamera.setPreviewDisplay(surface.getHolder());
             takePicture();
         } catch (Exception e) {
@@ -84,39 +96,27 @@ public class DiscoverService extends Service {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             Bitmap picture = BitmapFactory.decodeByteArray(data, 0, data.length);
-            picture = rotateBitmap(picture);
-            picture = formatBitmap(picture);
+            final Bitmap finalPicture = rotateBitmap(picture);
 
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("image", bitmapToBase64(picture));
+            MainActivity.imageView.setImageBitmap(finalPicture);
 
-            //TODO : Tester si visage présent avant de faire la requête
-
-            apiRequest.apiPostRequest(ApiRequest.GET_IDENTIFICATION, parameters, new ApiRequest.apiCallback() {
+            faceDetector.detectInImage(FirebaseVisionImage.fromBitmap(finalPicture)).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionFace>>() {
                 @Override
-                public void onSuccess(Context context, JSONObject jsonObject) {
-                    IdentificationDto identificationDto = ApiResponseParser.parseIdentification(jsonObject);
-                    //sendBroadcast();
-                    takePicture();
+                public void onSuccess(List<FirebaseVisionFace> faces) {
+                    if(faces.size() > 0)
+                        sendPictureToServer(finalPicture);
                 }
-
-                @Override
-                public void onError(Context context, String message) {
-                    Toast.makeText(context,message, Toast.LENGTH_SHORT).show();
-                    takePicture();
+            }).addOnFailureListener(
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            });
+            );
+            takePicture();
         }
     };
-
-    private Camera setCameraParameters(Camera camera){
-        Camera.Parameters parameters = camera.getParameters();
-        parameters.setPictureSize(256, 256);
-        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        parameters.setSceneMode(Camera.Parameters.SCENE_MODE_PORTRAIT);
-        camera.setParameters(parameters);
-        return camera;
-    }
 
     private Bitmap rotateBitmap(Bitmap bitmap){
         Matrix matrix = new Matrix();
@@ -146,9 +146,41 @@ public class DiscoverService extends Service {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
-    private void sendBroadcast(String base64){
-        Intent intent = new Intent(DiscoverService.REFRESH_DATA_INTENT);
-        intent.putExtra(DiscoverService.BASE_64_BITMAP, base64);
+    private void sendBroadcast(){
+        Intent intent = new Intent(DiscoverService.FACE_INFORMATIONS);
+        //intent.putExtra(DiscoverService.BASE_64_BITMAP, base64);
         sendBroadcast(intent);
+    }
+
+    private FirebaseVisionFaceDetector initFacedetector(){
+        FirebaseVisionFaceDetectorOptions options =
+                new FirebaseVisionFaceDetectorOptions.Builder()
+                        .setContourMode(FirebaseVisionFaceDetectorOptions.ALL_CONTOURS)
+                        .build();
+
+        FirebaseVisionFaceDetector detector = FirebaseVision.getInstance()
+                .getVisionFaceDetector(options);
+
+        return detector;
+    }
+
+    private void sendPictureToServer(Bitmap bitmap){
+        bitmap = formatBitmap(bitmap);
+
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("image", bitmapToBase64(bitmap));
+
+        apiRequest.apiPostRequest(ApiRequest.GET_IDENTIFICATION, parameters, new ApiRequest.apiCallback() {
+            @Override
+            public void onSuccess(Context context, JSONObject jsonObject) {
+                TestDto testDto = ApiResponseParser.parseTest(jsonObject);
+                sendBroadcast();
+            }
+
+            @Override
+            public void onError(Context context, String message) {
+                Toast.makeText(context,message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

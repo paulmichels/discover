@@ -28,6 +28,10 @@
             android:name="com.vuzix.icon.tint"
             android:value="true" />
 
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="face" />
+
         <receiver android:name="com.cnam.discover.Widget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
