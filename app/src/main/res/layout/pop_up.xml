@@ -34,14 +34,18 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300px"
+        android:layout_height="wrap_content"
         android:layout_marginTop="150px">
 
-    <include
-        layout="@layout/infosupplementaire"
-        android:id="@+id/InfoSup"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-</RelativeLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="330px">
+        <include
+            android:id="@+id/InfoSup"
+            layout="@layout/infosupplementaire"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="0dp" />
+        </FrameLayout>
+    </RelativeLayout>
 </RelativeLayout>
