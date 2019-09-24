@@ -20,7 +20,7 @@ public class DataUpdateReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals(DiscoverService.REFRESH_DATA_INTENT)) {
+        if (intent.getAction().equals(DiscoverService.FACE_INFORMATIONS)) {
             //
         }
     }
