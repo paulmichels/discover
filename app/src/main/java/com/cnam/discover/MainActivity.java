@@ -3,8 +3,6 @@ package com.cnam.discover;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -18,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.cnam.discover.broadcast.DataUpdateReceiver;
 import com.cnam.discover.service.DiscoverService;
 import com.vuzix.hud.actionmenu.ActionMenuActivity;
 
@@ -51,7 +50,7 @@ public class MainActivity extends ActionMenuActivity {
         if (dataUpdateReceiver == null) {
             dataUpdateReceiver = new DataUpdateReceiver();
         }
-        IntentFilter intentFilter = new IntentFilter(DiscoverService.FACE_INFORMATIONS);
+        IntentFilter intentFilter = new IntentFilter(DiscoverService.DISCOVER_PICTURE);
         registerReceiver(dataUpdateReceiver, intentFilter);
     }
 
@@ -114,14 +113,5 @@ public class MainActivity extends ActionMenuActivity {
         Intent intent = new Intent(MainActivity.this, DiscoverService.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startService(intent);
-    }
-
-    private class DataUpdateReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(DiscoverService.FACE_INFORMATIONS)) {
-                //
-            }
-        }
     }
 }

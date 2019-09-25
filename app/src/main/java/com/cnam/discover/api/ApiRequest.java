@@ -10,6 +10,7 @@ import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
@@ -17,13 +18,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class ApiRequest {
     private RequestQueue requestQueue;
     private Context context;
-    private static final String baseUrl = "http://151.80.45.139";
+    private static final String baseUrl = "https://discover.nexiz.ovh";
 
     public static final String GET_IDENTIFICATION = "/identification";
 
@@ -62,10 +62,32 @@ public class ApiRequest {
             }
         }) {
             @Override
-            protected Map<String, String> getParams() {
-                return parameters;
+            public byte[] getBody() {
+                return new JSONObject(parameters).toString().getBytes();
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
             }
         };
+
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 20000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 20000;
+            }
+
+            @Override
+            public void retry(VolleyError error) {
+
+            }
+        });
         requestQueue.add(request);
     }
 
@@ -82,7 +104,6 @@ public class ApiRequest {
     }
 
     private String errorInstance(VolleyError error){
-        Log.d("API", error.networkResponse + " : " + error.getMessage());
         String instance;
         if (error instanceof NetworkError) {
             instance = NetworkError.class.getSimpleName();
@@ -92,13 +113,12 @@ public class ApiRequest {
             instance = AuthFailureError.class.getSimpleName();
         } else if (error instanceof ParseError) {
             instance = ParseError.class.getSimpleName();
-        } else if (error instanceof NoConnectionError) {
-            instance = NoConnectionError.class.getSimpleName();
         } else if (error instanceof TimeoutError) {
             instance = TimeoutError.class.getSimpleName();
         } else {
             instance = "Unknow Error";
         }
+        Log.w("API", instance + " : " + error.getMessage());
         return instance;
     }
 

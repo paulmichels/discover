@@ -1,9 +1,11 @@
 package com.cnam.discover.dto;
 
+import com.cnam.discover.interfaces.IServerResponse;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TestDto {
+public class TestDto implements IServerResponse {
 
     private final String CONFIDENCE = "confidence";
     private final String PREDICTED_LABEL = "predicted_label";
