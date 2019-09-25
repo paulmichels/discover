@@ -6,46 +6,6 @@
     android:background="@color/ColorBackground"
     >
 
-    <ImageView
-        android:id="@+id/AvatarDuType"
-        android:layout_width="103dp"
-        android:layout_height="98dp"
-        android:layout_marginLeft="30px"
-        android:layout_marginTop="30px"
-        tools:src="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/NomDuType"
-        android:layout_width="126dp"
-        android:layout_height="60dp"
-        android:textSize="25dp"
-        android:layout_marginStart="180px"
-        android:layout_marginTop="25px"
-        android:text="NOM" />
 
-    <TextView
-        android:id="@+id/PrenomDuType"
-        android:layout_width="126dp"
-        android:layout_height="60dp"
-        android:textSize="25dp"
-        android:layout_marginStart="180px"
-        android:layout_marginTop="65px"
-        android:text="Prénom" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="150px">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="330px">
-        <include
-            android:id="@+id/InfoSup"
-            layout="@layout/infosupplementaire"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="0dp" />
-        </FrameLayout>
-    </RelativeLayout>
 </RelativeLayout>
