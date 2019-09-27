@@ -2,8 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/bluetoothItem"
-        android:title="@string/settings"
-        android:icon="@drawable/action_menu_item_background"
-        android:onClick="settingsItem"/>
+        android:id="@+id/playItem"
+        android:icon="@android:drawable/ic_media_play"
+        android:onClick="pauseItem"
+        android:title="@string/play" />
+
+    <item
+        android:id="@+id/pauseItem"
+        android:icon="@android:drawable/ic_media_pause"
+        android:onClick="pauseItem"
+        android:title="@string/pause" />
+
 </menu>

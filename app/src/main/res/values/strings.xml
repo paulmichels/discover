@@ -9,4 +9,7 @@
     <string name="error_cannot_get_permission">Camera permission not available.</string>
     <string name="error_not_having_camera">Your device does not have front camera.</string>
     <string name="error_camera_permission_denied">Camera permission denied.</string>
+
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
 </resources>

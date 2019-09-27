@@ -7,6 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+/**
+ * Preview de l'application lors de la navigation principale de Vuzix OS
+ */
+
 public class Widget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         if(appWidgetManager == null) {

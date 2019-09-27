@@ -10,6 +10,7 @@
         android:layout_marginLeft="25px"
         android:textSize="25dp"
         android:text="Age" />
+
     <TextView
         android:id="@+id/Genre"
         android:layout_width="wrap_content"
@@ -27,6 +28,7 @@
         android:layout_marginLeft="25px"
         android:textSize="25dp"
         android:text="Email"/>
+
     <TextView
         android:id="@+id/Hometown"
         android:layout_width="wrap_content"
@@ -34,6 +36,6 @@
         android:layout_marginTop="200px"
         android:layout_marginLeft="25px"
         android:textSize="25dp"
-        android:text="Hometowndvbdhvsbvdshvs"/>
+        android:text="Hometown"/>
 
 </RelativeLayout>

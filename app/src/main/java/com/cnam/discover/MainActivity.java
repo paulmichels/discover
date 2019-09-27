@@ -4,38 +4,39 @@ package com.cnam.discover;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.cnam.discover.broadcast.DataUpdateReceiver;
+import com.cnam.discover.interfaces.IIdentified;
+import com.cnam.discover.observer.IdentifiedObserver;
 import com.cnam.discover.service.DiscoverService;
 import com.vuzix.hud.actionmenu.ActionMenuActivity;
 
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class MainActivity extends ActionMenuActivity {
+public class MainActivity extends ActionMenuActivity implements Observer {
 
     private static final int CAMERA_REQUEST_CODE = 100;
-
-    private DataUpdateReceiver dataUpdateReceiver;
-
-    public static ImageView imageView;
+    private FrameLayout mFrame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        mFrame = findViewById(R.id.mainFrame);
 
-        imageView = findViewById(R.id.imageView);
+        IdentifiedObserver.getInstance().addObserver(this);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
@@ -47,19 +48,13 @@ public class MainActivity extends ActionMenuActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (dataUpdateReceiver == null) {
-            dataUpdateReceiver = new DataUpdateReceiver();
-        }
-        IntentFilter intentFilter = new IntentFilter(DiscoverService.DISCOVER_PICTURE);
-        registerReceiver(dataUpdateReceiver, intentFilter);
+        startCameraService();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (dataUpdateReceiver != null) {
-            unregisterReceiver(dataUpdateReceiver);
-        }
+        stopService(new Intent(MainActivity.this, DiscoverService.class));
     }
 
     @Override
@@ -95,8 +90,20 @@ public class MainActivity extends ActionMenuActivity {
         return false;
     }
 
-    public void settingsItem(MenuItem item){
-        showToast("Settings");
+    private void startCameraService(){
+        Intent intent = new Intent(MainActivity.this, DiscoverService.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startService(intent);
+    }
+
+    public void pauseItem(MenuItem item){
+        showToast("Pause");
+        item.setIcon(android.R.drawable.ic_media_pause);
+    }
+
+    public void playItem(MenuItem item){
+        showToast("Play");
+        item.setIcon(android.R.drawable.ic_media_play);
     }
 
     private void showToast(final String text){
@@ -109,9 +116,15 @@ public class MainActivity extends ActionMenuActivity {
         });
     }
 
-    private void startCameraService(){
-        Intent intent = new Intent(MainActivity.this, DiscoverService.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startService(intent);
+    @Override
+    public void update(Observable observable, Object o) {
+        final List<IIdentified> identified = (List<IIdentified>) o;
+        final Activity activity = this;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(activity, identified.get(0).getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
