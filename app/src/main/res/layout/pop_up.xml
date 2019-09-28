@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/ColorBackground"
+    android:background="@color/popup_background"
     >
 
+    <include
+        android:id="@+id/short_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/person_item" />
 
+    <include layout="@layout/person_information"
+        android:id="@+id/included_informations"
+        android:layout_below="@+id/short_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"/>
 
 </RelativeLayout>

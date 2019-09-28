@@ -8,33 +8,41 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.cnam.discover.interfaces.IIdentified;
+import com.cnam.discover.interfaces.IPerson;
 import com.cnam.discover.observer.IdentifiedObserver;
 import com.cnam.discover.service.DiscoverService;
+import com.squareup.picasso.Picasso;
 import com.vuzix.hud.actionmenu.ActionMenuActivity;
 
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 public class MainActivity extends ActionMenuActivity implements Observer {
 
     private static final int CAMERA_REQUEST_CODE = 100;
-    private FrameLayout mFrame;
+    private View popUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        mFrame = findViewById(R.id.mainFrame);
+
+        FrameLayout mFrame = findViewById(R.id.mainFrame);
+        popUp = getLayoutInflater().inflate(R.layout.pop_up, null);
+        popUp.setVisibility(View.GONE);
+        mFrame.addView(popUp);
+
 
         IdentifiedObserver.getInstance().addObserver(this);
 
@@ -116,14 +124,68 @@ public class MainActivity extends ActionMenuActivity implements Observer {
         });
     }
 
+    /*
     @Override
     public void update(Observable observable, Object o) {
-        final List<IIdentified> identified = (List<IIdentified>) o;
+        final List<IPerson> people = (List<IPerson>) o;
         final Activity activity = this;
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(activity, identified.get(0).getName(), Toast.LENGTH_SHORT).show();
+                popUp.setVisibility(View.VISIBLE);
+
+                ImageView profilePicture = findViewById(R.id.profile_picture);
+                Picasso.get().load(people.get(0).getProfilePicUrl()).into(profilePicture);
+
+                TextView lastName = findViewById(R.id.last_name);
+                lastName.setText(people.get(0).getLastName());
+
+                TextView firstName = findViewById(R.id.first_name);
+                firstName.setText(people.get(0).getFirstName());
+
+                TextView gender = findViewById(R.id.gender_value);
+                gender.setText(people.get(0).getGender());
+
+                TextView age = findViewById(R.id.age_value);
+                age.setText(people.get(0).getAge());
+
+                TextView description = findViewById(R.id.description_value);
+                description.setText(people.get(0).getDescription());
+            }
+        });
+    }
+*/
+
+    @Override
+    public void update(Observable observable, Object o) {
+        final IPerson person = (IPerson) o;
+        final Activity activity = this;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                popUp.setVisibility(View.VISIBLE);
+
+                if(person != null) {
+                    ImageView profilePicture = findViewById(R.id.profile_picture);
+                    Picasso.get().load(person.getProfilePicUrl()).into(profilePicture);
+
+                    TextView lastName = findViewById(R.id.last_name);
+                    lastName.setText(person.getLastName());
+
+                    TextView firstName = findViewById(R.id.first_name);
+                    firstName.setText(person.getFirstName());
+
+                    TextView gender = findViewById(R.id.gender_value);
+                    gender.setText(person.getGender());
+
+                    TextView age = findViewById(R.id.age_value);
+                    age.setText(person.getAge());
+
+                    TextView description = findViewById(R.id.description_value);
+                    description.setText(person.getDescription());
+                } else {
+                    popUp.setVisibility(View.GONE);
+                }
             }
         });
     }

@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import com.cnam.discover.api.ApiRequest;
 import com.cnam.discover.api.ApiResponseParser;
 import com.cnam.discover.api.ApiSingleton;
-import com.cnam.discover.interfaces.IIdentified;
+import com.cnam.discover.interfaces.IPerson;
 import com.cnam.discover.observer.IdentifiedObserver;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -129,10 +129,15 @@ public class DiscoverService extends Service {
         apiRequest.apiPostRequest(ApiRequest.GET_IDENTIFICATION, parameters, new ApiRequest.apiCallback() {
             @Override
             public void onSuccess(Context context, JSONObject jsonObject) {
-                List<IIdentified> identified = ApiResponseParser.parseTest(jsonObject);
-                if(identified.size() > 0) {
-                    IdentifiedObserver.getInstance().updateValue(identified);
+                /*
+                List<IPerson> people = ApiResponseParser.parseTest(jsonObject);
+                if(people.size() > 0) {
+                    IdentifiedObserver.getInstance().updateValue(people);
                 }
+                takePicture();
+                */
+                IPerson person = ApiResponseParser.parseTest(jsonObject);
+                IdentifiedObserver.getInstance().updateValue(person);
                 takePicture();
             }
 

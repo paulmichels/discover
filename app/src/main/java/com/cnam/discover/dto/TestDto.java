@@ -1,11 +1,11 @@
 package com.cnam.discover.dto;
 
-import com.cnam.discover.interfaces.IIdentified;
+import com.cnam.discover.interfaces.IPerson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TestDto implements IIdentified {
+public class TestDto implements IPerson {
 
     private final String CONFIDENCE = "confidence";
     private final String PREDICTED_LABEL = "predicted_label";
@@ -22,22 +22,33 @@ public class TestDto implements IIdentified {
         return confidence;
     }
 
-    public String getPredictedLabel() {
-        return predictedLabel;
-    }
-
     @Override
-    public String getName() {
-        return predictedLabel;
+    public String getFirstName() {
+        return predictedLabel.toUpperCase();
     }
 
     @Override
     public String getProfilePicUrl() {
-        return "https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTIzNjEzMTg5MzA5MzY3ODIy/benedict_cumberbatchjpg.jpg";
+        return "https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/61243115_107739237144932_3995934312594669568_n.jpg?_nc_cat=103&_nc_oc=AQnVpCLSF5l0vuEAx4raKmPXJyiA5mR63h9evVVFdRUMsJN4VAnTJaZmppeEvF6xSKQ&_nc_ht=scontent-cdg2-1.xx&oh=20d9b37eb2ac63b8b06c18c0d2e52c37&oe=5E3B094A";
+    }
+
+    @Override
+    public String getLastName() {
+        return "MICHELS";
     }
 
     @Override
     public String getDescription() {
-        return "Actor";
+        return "Petit ingénieur";
+    }
+
+    @Override
+    public String getAge() {
+        return "25";
+    }
+
+    @Override
+    public String getGender() {
+        return "Homme";
     }
 }
