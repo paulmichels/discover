@@ -12,4 +12,13 @@
 
     <string name="play">Play</string>
     <string name="pause">Pause</string>
+    <string name="favourite_artists">Artistes Préférés</string>
+    <string name="gender">Genre : </string>
+    <string name="age">Age : </string>
+    <string name="description">Description : </string>
+    <string name="artist_preview">artist_preview</string>
+    <string name="artist">Artiste</string>
+    <string name="name">NOM</string>
+    <string name="first_name">Prénom</string>
+    <string name="profile_picture">profile_picture</string>
 </resources>
