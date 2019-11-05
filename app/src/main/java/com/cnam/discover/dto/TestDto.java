@@ -1,24 +1,32 @@
 package com.cnam.discover.dto;
 
+import android.os.Parcel;
+
 import com.cnam.discover.interfaces.IPerson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Serializable;
 
 public class TestDto implements IPerson {
 
     private final String CONFIDENCE = "confidence";
     private final String PREDICTED_LABEL = "predicted_label";
 
-    private double confidence;
+    private String confidence;
     private String predictedLabel;
 
+
+    public TestDto() {
+    }
+
     public TestDto(JSONObject jsonObject) throws JSONException {
-        this.confidence = jsonObject.getDouble(CONFIDENCE);
+        this.confidence = jsonObject.getString(CONFIDENCE);
         this.predictedLabel = jsonObject.getString(PREDICTED_LABEL);
     }
 
-    public double getConfidence() {
+    public String getConfidence() {
         return confidence;
     }
 
@@ -50,5 +58,19 @@ public class TestDto implements IPerson {
     @Override
     public String getGender() {
         return "Homme";
+    }
+
+    public void setPredictedLabel(String predictedLabel) {
+        this.predictedLabel = predictedLabel;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }

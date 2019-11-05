@@ -27,6 +27,7 @@ import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +106,7 @@ public class DiscoverService extends Service {
                     if(faces.size() > 0) {
                         sendToServer(data);
                     } else {
+                        IdentifiedObserver.getInstance().updateValue(new ArrayList<IPerson>());
                         takePicture();
                     }
                 }
@@ -129,15 +131,10 @@ public class DiscoverService extends Service {
         apiRequest.apiPostRequest(ApiRequest.GET_IDENTIFICATION, parameters, new ApiRequest.apiCallback() {
             @Override
             public void onSuccess(Context context, JSONObject jsonObject) {
-                /*
-                List<IPerson> people = ApiResponseParser.parseTest(jsonObject);
-                if(people.size() > 0) {
-                    IdentifiedObserver.getInstance().updateValue(people);
+                List<IPerson> personList = ApiResponseParser.parseTest(jsonObject);
+                if(personList.size() > 0) {
+                    IdentifiedObserver.getInstance().updateValue(personList);
                 }
-                takePicture();
-                */
-                IPerson person = ApiResponseParser.parseTest(jsonObject);
-                IdentifiedObserver.getInstance().updateValue(person);
                 takePicture();
             }
 

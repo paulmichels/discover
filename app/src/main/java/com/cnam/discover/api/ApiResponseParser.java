@@ -17,53 +17,41 @@ public class ApiResponseParser {
     private static final String DATA = "data";
 
     public static List<IPerson> parseInstagram(JSONObject jsonObject){
-        List<IPerson> people = new ArrayList<>();
+        List<IPerson> personList = new ArrayList<>();
         try {
             JSONArray data = jsonObject.getJSONArray(DATA);
             for (int i = 0; i <data.length(); i++){
-                people.add(new InstagramDto(data.getJSONObject(i)));
+                personList.add(new InstagramDto(data.getJSONObject(i)));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return people;
+        return personList;
     }
-/*
+
     public static List<IPerson> parseTest(JSONObject jsonObject){
-        List<IPerson> people = new ArrayList<>();
+        List<IPerson> personList = new ArrayList<>();
         try {
             JSONArray data = jsonObject.getJSONArray(DATA);
             for (int i = 0; i <data.length(); i++){
-                people.add(new TestDto(data.getJSONObject(i)));
+                personList.add(new TestDto(data.getJSONObject(i)));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return people;
-    }
-
- */
-
-    public static IPerson parseTest(JSONObject jsonObject){
-        IPerson person = null;
-        try {
-            person = new TestDto(jsonObject.getJSONObject(DATA));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return person;
+        return personList;
     }
 
     public static List<IPerson> parseFacebook(JSONObject jsonObject){
-        List<IPerson> people = new ArrayList<>();
+        List<IPerson> personList = new ArrayList<>();
         try {
             JSONArray data = jsonObject.getJSONArray(DATA);
             for (int i = 0; i <data.length(); i++){
-                people.add(new FacebookDto(data.getJSONObject(i)));
+                personList.add(new FacebookDto(data.getJSONObject(i)));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return people;
+        return personList;
     }
 }
