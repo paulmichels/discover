@@ -1,17 +1,29 @@
 package com.cnam.discover.dto;
 
-import com.cnam.discover.interfaces.IPerson;
+import android.annotation.SuppressLint;
+import android.os.Parcel;
+
+import com.cnam.discover.IPerson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TestDto implements IPerson {
+@SuppressLint("ParcelCreator")
+public class TestDto implements IPerson{
 
     private final String CONFIDENCE = "confidence";
     private final String PREDICTED_LABEL = "predicted_label";
 
     private double confidence;
     private String predictedLabel;
+    private String profilePic;
+    private String lastName;
+    private String description;
+    private String age;
+    private String gender;
+
+    public TestDto() {
+    }
 
     public TestDto(JSONObject jsonObject) throws JSONException {
         this.confidence = jsonObject.getDouble(CONFIDENCE);
@@ -22,6 +34,10 @@ public class TestDto implements IPerson {
         return confidence;
     }
 
+    public void setPredictedLabel(String firstName) {
+        this.predictedLabel = firstName;
+    }
+
     @Override
     public String getFirstName() {
         return predictedLabel.toUpperCase();
@@ -29,26 +45,65 @@ public class TestDto implements IPerson {
 
     @Override
     public String getProfilePicUrl() {
-        return "https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/61243115_107739237144932_3995934312594669568_n.jpg?_nc_cat=103&_nc_oc=AQnVpCLSF5l0vuEAx4raKmPXJyiA5mR63h9evVVFdRUMsJN4VAnTJaZmppeEvF6xSKQ&_nc_ht=scontent-cdg2-1.xx&oh=20d9b37eb2ac63b8b06c18c0d2e52c37&oe=5E3B094A";
+        return profilePic;
     }
 
     @Override
     public String getLastName() {
-        return "MICHELS";
+        return lastName;
     }
 
     @Override
     public String getDescription() {
-        return "Petit ingénieur";
+        return description;
     }
 
     @Override
     public String getAge() {
-        return "25";
+        return age;
     }
 
     @Override
     public String getGender() {
-        return "Homme";
+        return gender;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(confidence);
+        dest.writeString(predictedLabel);
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    @Override
+    public int compareTo(IPerson o) {
+        if(o.getFirstName().equals(this.getFirstName())){
+            return 0;
+        }
+        return 1;
     }
 }

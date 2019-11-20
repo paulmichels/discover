@@ -12,10 +12,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.cnam.discover.api.ApiRequest;
+import com.cnam.discover.api.*;
 import com.cnam.discover.api.ApiResponseParser;
 import com.cnam.discover.api.ApiSingleton;
-import com.cnam.discover.interfaces.IPerson;
+import com.cnam.discover.IPerson;
 import com.cnam.discover.observer.IdentifiedObserver;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -82,41 +82,24 @@ public class DiscoverService extends Service {
     Camera.PictureCallback pictureCallback = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(final byte[] data, Camera camera) {
-
-            /*
-              A tester si Vuzix prend des photos encodées dans le format accépté par FirebaseVisionImageMetadata
-              Soit FirebaseVisionImageMetadata.IMAGE_FORMAT_YV12
-              Soit FirebaseVisionImageMetadata.IMAGE_FORMAT_NV21
-              Sinon tant pis, pas très important
-             */
-
-            /*
-            FirebaseVisionImageMetadata metadata = new FirebaseVisionImageMetadata.Builder()
-                    .setWidth(480)
-                    .setHeight(480)
-                    .setFormat(FirebaseVisionImageMetadata.IMAGE_FORMAT_YV12)
-                    .build();
-            mFaceDetector.detectInImage(FirebaseVisionImage.fromByteArray(data, metadata)).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionFace>>() {
-            */
-
-            mFaceDetector.detectInImage(FirebaseVisionImage.fromBitmap(BitmapFactory.decodeByteArray(data, 0, data.length))).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionFace>>() {
+        mFaceDetector.detectInImage(FirebaseVisionImage.fromBitmap(BitmapFactory.decodeByteArray(data, 0, data.length))).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionFace>>() {
+            @Override
+            public void onSuccess(List<FirebaseVisionFace> faces) {
+            if(faces.size() > 0) {
+                sendToServer(data);
+            } else {
+                takePicture();
+            }
+            }
+        }).addOnFailureListener(
+            new OnFailureListener() {
                 @Override
-                public void onSuccess(List<FirebaseVisionFace> faces) {
-                    if(faces.size() > 0) {
-                        sendToServer(data);
-                    } else {
-                        takePicture();
-                    }
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                    takePicture();
                 }
-            }).addOnFailureListener(
-                new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                        takePicture();
-                    }
-                }
-            );
+            }
+        );
         }
     };
 
@@ -129,15 +112,10 @@ public class DiscoverService extends Service {
         apiRequest.apiPostRequest(ApiRequest.GET_IDENTIFICATION, parameters, new ApiRequest.apiCallback() {
             @Override
             public void onSuccess(Context context, JSONObject jsonObject) {
-                /*
                 List<IPerson> people = ApiResponseParser.parseTest(jsonObject);
                 if(people.size() > 0) {
                     IdentifiedObserver.getInstance().updateValue(people);
                 }
-                takePicture();
-                */
-                IPerson person = ApiResponseParser.parseTest(jsonObject);
-                IdentifiedObserver.getInstance().updateValue(person);
                 takePicture();
             }
 
@@ -151,9 +129,9 @@ public class DiscoverService extends Service {
 
     private FirebaseVisionFaceDetector initFacedetector(){
         FirebaseVisionFaceDetectorOptions options =
-            new FirebaseVisionFaceDetectorOptions.Builder()
-                .setContourMode(FirebaseVisionFaceDetectorOptions.ALL_CONTOURS)
-                .build();
+                new FirebaseVisionFaceDetectorOptions.Builder()
+                        .setContourMode(FirebaseVisionFaceDetectorOptions.ALL_CONTOURS)
+                        .build();
 
         return FirebaseVision.getInstance().getVisionFaceDetector(options);
     }

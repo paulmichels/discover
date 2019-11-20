@@ -8,29 +8,32 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.cnam.discover.interfaces.IPerson;
+import com.cnam.discover.adapter.PersonAdapter;
+import com.cnam.discover.dto.TestDto;
 import com.cnam.discover.observer.IdentifiedObserver;
 import com.cnam.discover.service.DiscoverService;
-import com.squareup.picasso.Picasso;
 import com.vuzix.hud.actionmenu.ActionMenuActivity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 public class MainActivity extends ActionMenuActivity implements Observer {
 
     private static final int CAMERA_REQUEST_CODE = 100;
-    private View popUp;
+    private List<IPerson> testPerson;
+    private List<IPerson> testPersonPrintable = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private PersonAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +41,15 @@ public class MainActivity extends ActionMenuActivity implements Observer {
 
         setContentView(R.layout.activity_main);
 
-        FrameLayout mFrame = findViewById(R.id.mainFrame);
-        popUp = getLayoutInflater().inflate(R.layout.pop_up, null);
-        popUp.setVisibility(View.GONE);
-        mFrame.addView(popUp);
-
-
+        testList();
         IdentifiedObserver.getInstance().addObserver(this);
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new PersonAdapter(testPersonPrintable);
+        recyclerView.setAdapter(adapter);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
@@ -124,7 +129,7 @@ public class MainActivity extends ActionMenuActivity implements Observer {
         });
     }
 
-    /*
+
     @Override
     public void update(Observable observable, Object o) {
         final List<IPerson> people = (List<IPerson>) o;
@@ -132,61 +137,52 @@ public class MainActivity extends ActionMenuActivity implements Observer {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                popUp.setVisibility(View.VISIBLE);
-
-                ImageView profilePicture = findViewById(R.id.profile_picture);
-                Picasso.get().load(people.get(0).getProfilePicUrl()).into(profilePicture);
-
-                TextView lastName = findViewById(R.id.last_name);
-                lastName.setText(people.get(0).getLastName());
-
-                TextView firstName = findViewById(R.id.first_name);
-                firstName.setText(people.get(0).getFirstName());
-
-                TextView gender = findViewById(R.id.gender_value);
-                gender.setText(people.get(0).getGender());
-
-                TextView age = findViewById(R.id.age_value);
-                age.setText(people.get(0).getAge());
-
-                TextView description = findViewById(R.id.description_value);
-                description.setText(people.get(0).getDescription());
+                testPersonPrintable.clear();
+                for (IPerson person : people){
+                    for (IPerson base : testPerson){
+                        if(base.compareTo(person) == 0){
+                            testPersonPrintable.add(base);
+                        }
+                    }
+                }
+                adapter.notifyDataSetChanged();
             }
         });
     }
-*/
 
-    @Override
-    public void update(Observable observable, Object o) {
-        final IPerson person = (IPerson) o;
-        final Activity activity = this;
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                popUp.setVisibility(View.VISIBLE);
-
-                if(person != null) {
-                    ImageView profilePicture = findViewById(R.id.profile_picture);
-                    Picasso.get().load(person.getProfilePicUrl()).into(profilePicture);
-
-                    TextView lastName = findViewById(R.id.last_name);
-                    lastName.setText(person.getLastName());
-
-                    TextView firstName = findViewById(R.id.first_name);
-                    firstName.setText(person.getFirstName());
-
-                    TextView gender = findViewById(R.id.gender_value);
-                    gender.setText(person.getGender());
-
-                    TextView age = findViewById(R.id.age_value);
-                    age.setText(person.getAge());
-
-                    TextView description = findViewById(R.id.description_value);
-                    description.setText(person.getDescription());
-                } else {
-                    popUp.setVisibility(View.GONE);
-                }
-            }
-        });
+    private void testList(){
+        testPerson = new ArrayList<>();
+        TestDto paul = new TestDto();
+        paul.setLastName("Michels");
+        paul.setPredictedLabel("Paul");
+        paul.setAge("25");
+        paul.setDescription("CNAM");
+        paul.setGender("Homme");
+        paul.setProfilePic("https://scontent-mrs2-1.xx.fbcdn.net/v/t1.0-9/71185963_144616026790586_5627281041870815232_n.jpg?_nc_cat=101&_nc_oc=AQkxUoz0yDbdP-oOMcXa_HCnzcN2TIvXS7g4o6gkOOLsHe_QeKUavWZbZazGv28jl7I&_nc_ht=scontent-mrs2-1.xx&oh=94d86df532e9537f6ab4e776abbc5289&oe=5E4E371D");
+        TestDto ludo = new TestDto();
+        ludo.setLastName("Febvre");
+        ludo.setPredictedLabel("Ludovic");
+        ludo.setAge("22");
+        ludo.setDescription("CNAM");
+        ludo.setGender("Homme");
+        ludo.setProfilePic("https://media.licdn.com/dms/image/C5603AQERyhE7MRxyLQ/profile-displayphoto-shrink_800_800/0?e=1579737600&v=beta&t=Ccmg1djbKDAi527Fx0FRhUvsSJGLXMG487-pGfJ4MCg");
+        TestDto nico = new TestDto();
+        nico.setLastName("Andres");
+        nico.setPredictedLabel("Nicolas");
+        nico.setAge("21");
+        nico.setDescription("CNAM");
+        nico.setGender("Homme");
+        nico.setProfilePic("https://scontent-mrs2-1.cdninstagram.com/vp/e281e3d610e1500c21866c184f138c97/5E8427E3/t51.2885-19/s320x320/72875379_510984696417591_896398376625504256_n.jpg?_nc_ht=scontent-mrs2-1.cdninstagram.com");
+        TestDto thomas = new TestDto();
+        thomas.setLastName("Arnoux");
+        thomas.setPredictedLabel("Thomas");
+        thomas.setAge("21");
+        thomas.setDescription("CNAM");
+        thomas.setGender("Homme");
+        thomas.setProfilePic("https://scontent-mrs2-1.xx.fbcdn.net/v/t1.0-9/17457723_1667492696887947_8491364541328773525_n.jpg?_nc_cat=102&_nc_oc=AQkkbJv0vTDPzKNOzTOkizDBLIug2AJwy9Lgw6XT05GFNkiJu7V5POL5rzKLbig96ss&_nc_ht=scontent-mrs2-1.xx&oh=364cee7284049329b98f34dd8cb1c6b0&oe=5E437746");
+        testPerson.add(paul);
+        testPerson.add(ludo);
+        testPerson.add(nico);
+        testPerson.add(thomas);
     }
 }
